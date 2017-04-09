@@ -10,6 +10,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import com.mysql.jdbc.Driver;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -31,6 +32,7 @@ public class E_Bank_Employee {
     }
     
     public boolean registerEmployee(String name, String position, String username, String password) {
+        boolean flag=false;
         try {
             makeConnection();
             System.out.println("Connection successfully made\n");
@@ -44,16 +46,17 @@ public class E_Bank_Employee {
             stmt = conn.createStatement();
             int rs = stmt.executeUpdate(sql);
 
-            return true;
+            flag=true;
 
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
 
-        return false;
+        return flag;
     }
     
     public boolean loginEmployee(String username, String password) {
+        boolean flag=false;
         try {
             makeConnection();
             System.out.println("Connection successfully made\n");
@@ -68,17 +71,18 @@ public class E_Bank_Employee {
             ResultSet rs = stmt.executeQuery(sql);
 //            String status;
             if (!rs.next()) {
-                return false;
+                flag=false;
             } else {
-                return true;
+                flag=true;
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        return false;
+        return flag;
     }
 
     public boolean editEmployee(String name, String position, String username, String password) {
+        boolean flag=false;
         try {
             makeConnection();
             System.out.println("Connection successfully made\n");
@@ -91,17 +95,19 @@ public class E_Bank_Employee {
             String sql = "UPDATE employee_details SET name='" + name + "', position='" + position + "', username='" + username + "', password='" + password + "' WHERE username='" + username+"'";
             stmt = conn.createStatement();
             int rs = stmt.executeUpdate(sql);
-
-            return true;
+            if(rs==1){
+                flag=true;
+            }
 
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
 
-        return false;
+        return flag;
     }
     
     public boolean deleteEmployee(String username) {
+        boolean flag=false;
         try {
             makeConnection();
             System.out.println("Connection successfully made\n");
@@ -114,14 +120,17 @@ public class E_Bank_Employee {
             String sql = "DELETE FROM employee_details WHERE username='"+username+"'";
             stmt = conn.createStatement();
             int rs = stmt.executeUpdate(sql);
-            return true;
+            if(rs==1){
+                flag=true;
+            }
         } catch(SQLException ex){
             ex.printStackTrace();
         }
-        return false;
+        return flag;
     }
     
     public boolean displayEmployeeList() {
+        boolean flag=false;
         try {
             makeConnection();
             System.out.println("Connection successfully made\n");
@@ -137,11 +146,38 @@ public class E_Bank_Employee {
             while(rs.next()){
                 System.out.println("\nname : " + rs.getString("name") + "\nposition : " + rs.getString("position") + "\nusername : " + rs.getString("username")); 
             }
-            return true;
+            flag=true;
         } catch(SQLException ex){
             ex.printStackTrace();
         }
-        return false;
+        return flag;
+    }
+    
+    /*Developed by Raveen S Rathnayake */
+    public String[] loadEmployee(String username) {
+        String[] array=null;
+        try {
+            makeConnection();
+            System.out.println("Connection successfully made\n");
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.err.println("Connection Failure");
+        }
+        
+        try{
+            String sql = "SELECT name, position, username FROM employee_details WHERE username='"+username+"' ";
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()){
+                array=new String[3];
+                array[0]=rs.getString("name");
+                array[1]=rs.getString("position");
+                array[2]=rs.getString("username");
+            }
+        } catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        return array;
     }
     
 }
