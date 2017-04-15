@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 09, 2017 at 09:16 AM
+-- Generation Time: Apr 15, 2017 at 03:44 PM
 -- Server version: 10.1.13-MariaDB
 -- PHP Version: 7.0.8
 
@@ -73,7 +73,7 @@ CREATE TABLE `employee_details` (
 INSERT INTO `employee_details` (`name`, `position`, `username`, `password`) VALUES
 ('Administrator', 'Main Administrator', 'admin', '123'),
 ('Sunil Perera', 'Cleaner', 'sunil', '123'),
-('Raveen Rathnayake', 'Manager', 'raveen', '123');
+('Raveen Rathnayake', 'raveen', 'raveen', '123');
 
 --
 -- Indexes for dumped tables
